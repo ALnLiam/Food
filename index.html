@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Recipe Finder</title>
+  <!-- 3d model -->
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <script nomodule src="https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js"></script>
+  <style>
+    .banner-wrapper {
+      margin-bottom: 2rem;
+    }
+    .banner-wrapper button {
+      font-size: 1rem;
+      margin-right: 0.5rem;
+      padding: 0.5rem 1rem;
+     
+    }
+    .banner {
+      background: white;
+      position: relative;
+      width: 100%;
+      height: 40em;
+      overflow: hidden;
+    }
+    .banner .box {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+    }
+    .banner .box-bg {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      transform: translateX(100%);
+      z-index: 1;       
+    }
+    .banner .box-content {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.5rem;
+      visibility: hidden;  
+      z-index: 2;       
+      pointer-events: none;
+    }
+
+
+    * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', sans-serif;
+            background-color: #e2a176; 
+            color: #fff;
+        }
+
+
+
+/* NAVBAR */
+          .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .nav-links a {
+          color: white;
+            margin: 0 1.5rem; 
+            text-decoration: none;
+          
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+        .nav-links a:hover{
+           text-decoration: underline;
+        }
+
+
+
+
+
+
+
+        .content {
+            max-width: 50%;
+            min-width: 300px;
+            padding-right: 2rem; 
+        }
+
+        .number {
+          margin-top: 7.5%;
+          margin-left: 11%;
+          
+          /* top:50%; */
+            font-size: 4rem;
+            font-weight: 700;
+            color:white;
+        }
+
+        .title {
+
+      font-size: 17em;
+      
+      letter-spacing: -22px;
+      font-weight: bold;
+      font-weight: 900;
+      color: #352f73;
+      position: absolute;
+      text-align: center; 
+      /* transform: translateX(-50%); */
+      top: 2%;
+      /* left:10.5%; */
+      text-align: center;
+      transform: scaleY(0.5);
+   
+      /* right: 25%;
+      left: 25%; */
+ 
+      opacity: 0.3;
+
+
+
+
+     
+
+
+    
+
+/* 
+            font-size: 6rem;
+            font-weight: 900;
+            margin: -1rem 0 1rem;
+            color: #fff; 
+            line-height: 1;  */
+        }
+
+        .description {
+       
+            /* background-color: rgb(54, 54, 16); */
+            font-size: 1rem;
+            /* margin-bottom: 2rem; */
+            max-width: 300px;
+            color: white; 
+            
+        }
+
+        .details {
+            font-size: 1rem;
+            /* background-color: aqua; */
+            /* margin-right: 10%; */
+            list-style: none;
+            padding-left: 0; 
+        }
+
+        .details li {
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            color: white;
+        }
+         .details li::before {
+            content: '•'; /* Add bullet */
+            color: #fff;
+            margin-right: 10px;
+        }
+
+
+  </style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+  <div class="banner-wrapper">
+    <div class="banner">
+
+
+      <div style="position: absolute;  z-index: 999; "> 
+      <header class="navbar">
+        <div class="logo">Recipe Finder</div>
+        <nav class="nav-links">
+            <a href="hg.html">Filter</a>
+            <a href="#"></a>
+            <a href="#"></a>
+            <a href="#"></a>
+            <a href="#"></a>
+        </nav>
+    </header>
+
+
+
+
+ 
+
+    <!-- <div style="margin-top: 35%; background-color: #352f73"></div> -->
+
+
+
+<div style="display: flex; justify-content: inital;width: 170%; margin-left: 17%; margin-top: 37%;">
+
+<div style="flex: 1;">
+  <p class="description">
+    Miscellanous Ingredients on hand? <br> Let’s Make Ramen—or Something Better. <br> <br>
+    Turn what’s in your fridge into something crave-worthy. From instant noodles to inspired meals, we’ve got you.
+  </p>
+</div>
+<div style="flex: 1; justify-content: flex-end; display: flex;">
+  <ul class="details">
+    Cook with what you’ve got—no stress, no waste.<br>
+    <li>1.Enter your ingredients <br> </li>
+    <li>2.Filter by cuisine or diet <br> </li>
+    <li>3.Get personalized recipes instantly </li>
+  </ul>
+</div>
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+
+      <div class="box">
+        <div class="box-content" > 
+
+
+
+
+
+      
+
+
+            
+  <!-- 3D Model -->
+
+
+  <model-viewer id="food1"
+    src="ramen.glb"
+    alt="3D model"
+    style="width: 30em; height: 25em; margin-top: 13%;"
+    rotation-per-second="-800%"
+  >
+  </model-viewer>
+
+        </div>
+
+
+
+        <div class="box-bg">   
+          
+          
+
+
+
+
+
+          <h2 class="number" style="opacity: 1; position: absolute; z-index: 100;">01</h2>          
+          <div style=" background-color: rgb(16, 16, 16);  text-align: right; display: flex;
+justify-content: center; "><h1 class="title">CRAVE</h1></div>
+
+        </div>
+
+
+      </div>
+      <div class="box">
+        <div class="box-content" style="display: flex;
+        justify-content: center;
+        align-items: center;"> 
+          <img style="width:30em;" src="ingredients.png">
+        </div>
+        <div class="box-bg">
+          <h2 class="number" style="opacity: 1; position: absolute; z-index: 100;">02</h2>          
+          <div style="  text-align: right; display: flex;
+justify-content: center; "><h1 class="title">CREATE</h1></div>
+        </div>
+      </div>
+
+
+      <div class="box">
+        <div class="box-content" style="display: flex;
+        justify-content: center;
+        align-items: center;"> 
+          <img style="width:20em;" src="macnchesse.png">
+        </div>
+
+        <div class="box-bg">
+          <h2 class="number" style="opacity: 1; position: absolute; z-index: 100;">03</h2>          
+          <div style="   text-align: right; display: flex;
+justify-content: center; "><h1 class="title">SAVOR</h1></div>
+        </div>
+      </div>
+
+
+    </div>
+    <button class="pause-btn">Pause</button>
+    <button class="resume-btn" disabled>Resume</button>
+  </div>
+
+<!-- 
+End of main -->
+
+
+
+
+
+<section class="how-it-works">
+  <h2>How It Works</h2>
+  <div class="steps">
+    <div class="step">
+      <span>1</span>
+      <h3>List Your Ingredients</h3>
+      <p>Enter whatever you have—pantry staples, leftovers, or that one lonely zucchini.</p>
+    </div>
+    <div class="step">
+      <span>2</span>
+      <h3>Set Your Filters</h3>
+      <p>Pick your preferred cuisine, meal type, or dietary needs. We’ll handle the matching.</p>
+    </div>
+    <div class="step">
+      <span>3</span>
+      <h3>Get Recipes That Fit</h3>
+      <p>Instantly explore dishes that actually work with what you’ve got.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+.how-it-works {
+  padding: 60px 20px;
+  background: white;
+  color: #333;
+  text-align: center;
+}
+.how-it-works h2 {
+  font-size: 2.5em;
+  margin-bottom: 40px;
+}
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+@media(min-width: 768px) {
+  .steps {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+}
+.step span {
+  font-size: 2em;
+  background: #e2a176;
+  color: white;
+  width: 48px;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin-bottom: 15px;
+}
+.step h3 {
+  font-size: 1.25em;
+  margin-bottom: 10px;
+}
+</style>
+
+
+<section class="cta">
+  <h2>Ready to Find Out What You Can Cook?</h2>
+  <p>Start with the ingredients you already have. We’ll handle the rest.</p>
+  <button><a href="hg.html">Start Now</a></button>
+  
+</section>
+<style>
+.cta {
+  color: white;
+background:black;
+padding: 60px 20px;
+text-align: center;
+}
+.cta h2 {
+font-size: 2em;
+margin-bottom: 15px;
+}
+.cta button {
+  color: white;
+  font-size: 1em;
+background: #e2a176;
+border: none;
+cursor: pointer;
+padding: 15px 30px;
+margin-top: 20px;
+border-radius: 8px;
+/* transition: background 0.3s ease; */
+}
+.cta button:hover {
+background:#e2a176;
+}
+
+</style>  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script>
+    let t = 7000; 
+    document.querySelectorAll('.banner-wrapper').forEach(initBannerWrapper);
+
+    function initBannerWrapper(wrapper) {
+      const banner   = wrapper.querySelector('.banner');
+      const pauseBtn = wrapper.querySelector('.pause-btn');
+      const resumeBtn= wrapper.querySelector('.resume-btn');
+      // const colors   = ['red','##23e6d7','#95bc62'];
+      const colors   = ['#d66253','#23e6d7','#95bc62'];
+      const boxes    = banner.querySelectorAll('.box');
+      let idx        = 0;               // next box index
+      let zCount     = boxes.length;    // for stacking order
+      let timeoutId, intervalId;
+      let isPaused   = false;
+
+      // 1) Initial setup
+      boxes.forEach((box, i) => {
+        box.style.zIndex = i + 1;
+        box.querySelector('.box-bg').style.backgroundColor = colors[i];
+        box.querySelector('.box-content').style.visibility = 'hidden';
+      });
+
+      // 2) Show first immediately
+      const first = boxes[0];
+      first.querySelector('.box-bg').style.transform = 'translateX(0)';
+      first.querySelector('.box-content').style.visibility = 'visible';
+      idx = 1;
+
+      // 3) Handlers to start/stop the cycle
+      function startCycle() {
+        // clear any leftovers
+        clearTimeout(timeoutId);
+        clearInterval(intervalId);
+
+        // setInterval(addAutoRotate, t/2);
+
+        // schedule first slide in 7s
+        timeoutId = setTimeout(() => {
+          slideNext();
+          intervalId = setInterval(slideNext, t);
+          
+        }, t);
+   
+        pauseBtn.disabled  = false;
+        resumeBtn.disabled = true;
+        isPaused = false;
+      }
+
+      function stopCycle() {
+        clearTimeout(timeoutId);
+        clearInterval(intervalId);
+        pauseBtn.disabled  = true;
+        resumeBtn.disabled = false;
+        isPaused = true;
+      }
+
+      pauseBtn.addEventListener('click', () => {
+        if (!isPaused) stopCycle();
+      });
+      resumeBtn.addEventListener('click', () => {
+        if (isPaused) startCycle();
+      });
+
+
+      // 4) The slide-next function (same layering logic)
+      function slideNext() {
+        const box     = boxes[idx];
+        const bg      = box.querySelector('.box-bg');
+        const content = box.querySelector('.box-content');
+
+        // bring this box to front
+        box.style.zIndex = ++zCount;
+
+        // prep bg off-screen
+        bg.style.transition = 'none';
+        bg.style.transform  = 'translateX(100%)';
+        bg.getBoundingClientRect();
+
+        // once its slide finishes, swap the text
+        function onEnd(e) {
+          if (e.target === bg && e.propertyName === 'transform') {
+            boxes.forEach(b =>
+              b.querySelector('.box-content').style.visibility = 'hidden'
+            );
+            content.style.visibility = 'visible';
+            bg.removeEventListener('transitionend', onEnd);
+          }
+        }
+        bg.addEventListener('transitionend', onEnd);
+
+        // slide it in
+        bg.style.transition = 'transform 1s ease';
+        bg.style.transform  = 'translateX(0)';
+
+        idx = (idx + 1) % boxes.length;
+
+        // removeAutoRotate(); 
+      }
+
+      // kick things off
+      startCycle();
+    }
+  </script>
+
+
+
+
+
+
+<style>
+  body{
+margin:0;
+overflow-x:hidden;
+}
+
+.footer{
+padding:30px 0px;
+font-family: 'Play', sans-serif;
+text-align:center;
+background:black;
+}
+
+.footer .row{
+color:gray;
+  /* color:red */
+padding:0.6% 0%;
+width:100%;
+margin:1% 0%;
+font-size:0.8em;
+}
+
+.footer .row a{
+text-decoration:none;
+color:gray;
+transition:0.5s;
+}
+
+.footer .row a:hover{
+color:#fff;
+}
+
+.footer .row ul{
+width:100%;
+}
+
+.footer .row ul li{
+display:inline-block;
+margin:0px 30px;
+}
+
+.footer .row a i{
+font-size:2em;
+margin:0% 1%;
+}
+
+ </style>
+
+
+<footer>
+  <div class="footer">
+  <div class="row">
+  <a href="#"><i class="fa fa-facebook"></i></a>
+  <a href="#"><i class="fa fa-instagram"></i></a>
+  <a href="#"><i class="fa fa-youtube"></i></a>
+  <a href="#"><i class="fa fa-twitter"></i></a>
+  </div>
+  
+  <div class="row">
+  <ul>
+  <li><a href="#">Home Page</a></li>
+  <li><a href="#">Loreum</a></li>
+  <li><a href="#">Lipsum</a></li>
+  </ul>
+  </div>
+  
+  <div class="row">
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+  </div>
+  </div>
+  </footer>
+
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

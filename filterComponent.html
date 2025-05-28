@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="filter.css" rel="stylesheet" type="text/css" />
+  <title>Recipe Filter Component</title>
+  <style>
+    .chip { 
+      border-radius: 12px;
+      padding: 5px 10px; 
+      display: inline-block; 
+      background: white; margin: 2px;
+     }
+    .chip button { 
+      margin-left: 5px; 
+      cursor: pointer;
+      background: none; 
+      border: none;  
+    }
+    .recipe-card { 
+      background: white ;
+      margin-top: 1em;
+      margin-bottom: 1em;
+
+      border: 1px solid #ccc; 
+      padding: 1em; 
+      border-radius: 8px; }
+  </style>
+</head>
+<body>
+<section class="filter">
+  <h2>Filters</h2>
+  <h3>Ingredients</h3>
+  <div class="input-group">
+    <input id="add-include" placeholder="Add ingredient..." />
+    <button id="add-include-btn">Add</button>
+  </div>
+  <div id="include-chips" class="chips"></div>
+
+  <h3>Meal Type</h3>
+  <div id="meal-buttons" class="buttons-group">
+    <button value="breakfast">Breakfast</button>
+    <button value="lunch">Lunch</button>
+    <button value="dinner" class="active">Dinner</button>
+    <button value="snack">Snack</button>
+    <button value="dessert">Dessert</button>
+  </div>
+
+  <h3>Cuisine</h3>
+  <input id="cuisine-input" placeholder="ex: Italian" />
+
+  <div class="actions">
+    <button id="show-recipes">Show Recipes</button>
+  </div>
+</section>
+
+<section class="recipe-output"></section>
+
+
+
+<script>
+  // https://ai.google.dev/gemini-api/docs/api-key
+let API_KEY = "AIzaSyBRd3CWv3badykkooV7l2-Z8nEqBqQSVAE";
+let API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
+
+function createChip(text, containerId) {
+  let container = document.getElementById(containerId);
+  let chip = document.createElement("div");
+  chip.className = "chip";
+  chip.innerHTML = `${text} <button class="chip-remove">×</button>`;
+  chip.querySelector(".chip-remove").onclick = () => container.removeChild(chip);
+  container.appendChild(chip);
+}
+
+document.getElementById("add-include-btn").onclick = () => {
+  let input = document.getElementById("add-include");
+  let text = input.value.trim();
+  if (text) {
+    createChip(text, "include-chips");
+    input.value = "";
+  }
+};
+
+
+// check which button inside 'meal-buttons' is 'active' and return it's value, else return ''
+  function getSelectedMealType() {
+  let mealButtons = document.getElementById("meal-buttons");
+  let buttons = mealButtons.querySelectorAll("button");
+  for (let i = 0; i < buttons.length; i++) {
+    if (buttons[i].classList.contains("active")) {
+      return buttons[i].value;
+    }
+  }
+  return "";
+}
+
+
+// retrieves nodelist of all button elements, sets up each one to remove the 'active' class from all buttons when clicked, then apply it to the clicked button
+const mealButtons = document.querySelectorAll("#meal-buttons button");
+
+for (let i = 0; i < mealButtons.length; i++) {
+  mealButtons[i].addEventListener("click", function () {
+    for (let o = 0; o < mealButtons.length; o++) {
+      mealButtons[o].classList.remove("active");
+    }
+    mealButtons[i].classList.add("active");
+  });
+}
+
+
+
+
+
+
+
+// Structured Output 
+// https://ai.google.dev/gemini-api/docs/structured-output#:~:text=There%20are%20two%20ways%20to%20generate%20JSON%20using,the%20model%20to%20generate%20JSON%2C%20configure%20a%20responseSchema.
+document.getElementById("show-recipes").onclick = async () => {
+  let includeChips = document.getElementById("include-chips");
+  let ingredientChips = includeChips.getElementsByClassName("chip");
+  
+  let ingredients = [];
+  for (let i = 0; i < ingredientChips.length; i++) {
+    let chipText = ingredientChips[i].textContent.trim();     
+    let modifedText = chipText.slice(0, -1);                  
+    ingredients.push(modifedText);                            // remove the excess space, x then Add to the ingredients array
+  }
+  let cuisine = document.getElementById("cuisine-input").value.trim(); 
+   let mealType = getSelectedMealType();
+
+  //stabilize api response with provided json ex
+  const promptText = `You are a helpful cooking assistant return ONLY a valid raw JSON array, no extra text.
+Return 3 recipes in this format:
+[
+  {
+    "title": "Recipe Name",
+    "ingredients": ["item1", "item2"],
+    "cookingTime": "30 minutes",
+    "cuisineType": "${cuisine}",
+    "mealType": "${mealType}",
+    "instructions": ["Step 1", "Step 2"]
+  }
+]
+Use ONLY these ingredients: ${ingredients.join(",")}`;
+
+let outputEl = document.querySelector(".recipe-output");
+  outputEl.innerHTML = `<p>Loading recipes…</p>`;
+
+  //GENERATED 
+  // api requests are made over the internet. Network requests are inherently unreliable (ex: server might be down or take too long to responed, no internet connection, or unvalid data / problem on it's end ) hence using a try error block runs it until you succeed or displays the error at least. 
+  try {
+    const res = await fetch(API_URL, { //fetch is a api in web browser that makes network requests (i.e sending & getting data over HTTP)  and needs at least 1 of the 2 parameters: resource(where to send the request) and options (where you can customize aspects of the request)
+      method: "POST", //method, specifies the desired action to do to the URL(resource), i.e what do u what to do? values include GET(retrieve data), POST(send data to server to create a new resource), PUT(update a existing resource or create), PATCH(partially update existing resource), DELETE (remove resource from server )
+      //why not default, GET? a GET request is asking for a existing output. But u r providing an input. POST is used because you are providing input (promptText) and asking the server to generate a new output/ response 
+      headers: { "Content-Type": "application/json" }, //header property contains key-value pairs that provide additional info about the request or body(like notes) Types include: Content-Type, tells server the format of the data being sent.  values: application/json (body is a json string). If content-type is wrong, server won't be able to parse it and hence won't know how to process it 
+      body: JSON.stringify({ 
+        //header property contains key-value pairs that provide additional info about the request or body(like notes) Types include: Content-Type, tells server the format of the data being sent.  values: application/json (body is a json string). If content-type is wrong, server won't be able to parse it and hence won't know how to process it 
+        contents: [{ parts: [{ text: promptText }] }],
+        //when interacting with ai, u need to send a history of the conversation so it understands the context of the request. Contents is an array of objects and parts, each object within, is a message of the conversation. In this case, only one object, message
+        generationConfig: {
+          temperature: 0.7,
+          candidateCount: 1
+        }
+        //generationConfig allows you to customize aspects of how the response is generated. temperatire is randomness of AI output. CandidateCount is number of responses generated
+      })
+    });
+    if (!res.ok) throw new Error(`API error: ${res.status}`);
+    //res holds the response object returned by fetch API. res.ok asks if it's good, .ok is a boolean property where if true response is within the 200-299 range. If false, http status code is outside the ok range usually because request went wrong like bad request, not found or service unavilable. So it !res.ok, res is not okay, throw a error i.e (stop code rn, activate nearest catch block)
+    const payload = await res.json(); //parses + extracts actual data from response body 
+
+
+
+
+
+
+
+
+
+
+      // types of errors: https://ai.google.dev/gemini-api/docs/troubleshooting
+
+
+    // Try to extract the JSON from the raw text
+    let raw = payload.candidates?.[0]?.content?.parts?.[0]?.text || "";
+    //payload is the response json, candidates responses, content is the conversation and parts is the individual messages and you're looking for the text part of parts. 
+    // optional chaining, ?, is basically if this is not there just stop and don't make an error. The or operator || just means if u couldn't find the text from all that make sure variable raw is emptey not undefinded 
+    raw = raw.trim();
+    let jsonStart = raw.indexOf("[");
+    let jsonEnd = raw.lastIndexOf("]"); //json start with ], lastIndexOf finds first ], important if bot adds any additional notes at the end 
+    let jsonString = raw.slice(jsonStart, jsonEnd + 1);// cut off [ and ], +1 so u include the ]
+
+
+    let recipes;
+    try {
+      //convert json text string into a JS object/ array 
+      recipes = JSON.parse(jsonString);
+    } catch (e) {
+      //bascially if string wasn't valid json , JSON.parse() fails -> catch block 
+      console.error("Failed to parse JSON. Raw output:", raw); //log the error and the og AI output
+      throw new Error("Could not parse JSON from model output"); //stop rn and throw a error 
+    } 
+
+    if (!Array.isArray(recipes) || recipes.length === 0) {
+      //if array is not an array or empty 
+      outputEl.innerHTML = `<p>No recipes found.</p>`;
+    } else {
+      // if array is fr , clear og content at outputEl and make recipe card 
+      outputEl.innerHTML = "";
+      for (let i = 0; i < recipes.length; i++) {
+      let r = recipes[i];
+
+      let card = document.createElement("div");
+      card.className = "recipe-card";
+      card.innerHTML = `
+        <h4>${r.title}</h4>
+        <div> <span font-weight: bold;>Cook Time: </span> ${r.cookingTime}</div>
+        <div> <span font-weight: bold;>Cuisine:</span> ${r.cookingTime}</div>
+        <div> <span font-weight: bold;>Meal: </span> ${r.cookingTime}</div>
+        <h5>Ingredients</h5>
+        <ul>${r.ingredients.map(i => `<li>${i}</li>`).join("")}</ul>
+        <h5>Instructions</h5>
+        <ol>${Array.isArray(r.instructions) ? r.instructions.map(s => `<li>${s}</li>`).join("") : `<li>${r.instructions}</li>`}</ol>
+      `;
+      //map is a array function that takes each object in the array and applied a function to it, creating a new array with the results. For each i (ingredient), create a new string. join(), takes all the elements in an array and joins them together into a single string 
+      //ternaryOperator (same as the react native app) a shorthand of writing an if-else statements in format: (condition)? (if true, execute what's here) : (if false execute code here)
+      outputEl.appendChild(card);
+}
+      
+    }
+  } catch (err) {
+    console.error(err);
+    outputEl.innerHTML = `<p>Error fetching recipes: ${err.message}</p>`;
+  }
+};
+</script>
+</body>
+</html>
