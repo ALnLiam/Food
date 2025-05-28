@@ -1,0 +1,81 @@
+body{ 
+    font-family:  sans-serif; 
+    background: white; 
+  }
+    /* rem, relative to html element font size~16px -> fonts */
+  
+  .filter { 
+    background-color: white; 
+    padding: 2em; 
+    border-radius: 12px; 
+    max-width: 750px ;
+    margin: auto; 
+    box-shadow: 0 7px 8px rgba(0,0,0,0.3); 
+  }
+  
+  
+  
+  h2, h3 {
+    margin: 0 0 8px; 
+  }
+  
+  .input-group{
+    background-color: red;
+    display: flex; 
+    gap: 8px; 
+    margin-bottom: 12px; 
+  }
+  .input-group input { flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+  .input-group button { padding: 8px 12px; border: none; background: #007bff; color: #fff; border-radius: 4px; cursor: pointer; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+  .chip { background: #e0e0e0; padding: 6px 10px; border-radius: 16px; display: flex; align-items: center; gap: 6px; }
+  .chip button { border: none; background: transparent; cursor: pointer; font-weight: bold; }
+  .dual-section { display: flex; gap: 24px; flex-wrap: wrap; }
+  .buttons-group { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .buttons-group button { padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px; background: #fff; cursor: pointer; }
+  .buttons-group button.active { background: #007bff; color: #fff; border-color: #007bff; }
+  .slider-group { margin-bottom: 16px; }
+  .actions { display: flex; justify-content: space-between; margin-top: 24px; }
+  .actions button { padding: 10px 16px; border: none; border-radius: 4px; cursor: pointer; }
+  .actions .clear { background: transparent; color: #007bff; }
+  .actions .show { background: #28a745; color: #fff; }
+  details { margin-top: 16px; }
+
+
+
+
+
+
+
+
+
+
+  .recipe-output {
+    max-width: 750px;
+    margin: 2em auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(240px,1fr));
+    gap: 1.5em;
+  }
+  .recipe-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 1em;
+    box-shadow: 0 4px 6px rgba(0,0,0,.1);
+  }
+  .recipe-card h4 {
+    margin-top: 0;
+  }
+  .recipe-card .cook-time {
+    font-size: .9em;
+    color: #555;
+    margin-bottom: .5em;
+  }
+  .recipe-card ul {
+    padding-left: 1.2em;
+    margin: .5em 0;
+  }
+  .recipe-card ol {
+    padding-left: 1.2em;
+  }
+  
